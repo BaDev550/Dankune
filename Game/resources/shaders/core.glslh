@@ -1,0 +1,24 @@
+#extension GL_EXT_nonuniform_qualifier : require
+#extension GL_EXT_buffer_reference : require
+
+#define UniformGlobalSet 0
+#define BindlessGlobalSet 1
+#define GetLayoutVariableName(name) u##name##Register
+#define GetResource(Name, Index) GetLayoutVariableName(Name)[Index]
+
+layout(set = BindlessGlobalSet, binding = 0) uniform texture2D uGlobalTextures2D[];
+layout(set = BindlessGlobalSet, binding = 1) uniform sampler uGlobalSampler;
+
+#define GetBindlessTextureFromID(id) sampler2D(uGlobalTextures2D[nonuniformEXT(id)], uGlobalSampler)
+
+layout(buffer_reference, std430, buffer_reference_align = 16) readonly buffer CameraData {
+	mat4 view;
+	mat4 proj;
+	vec2 pos;
+};
+
+layout(set = UniformGlobalSet, binding = 0) uniform SceneData {
+	CameraData cameraPtr;
+} uSceneData;
+
+#define GetCamera() uSceneData.cameraPtr
