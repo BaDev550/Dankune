@@ -11,3 +11,7 @@ Dont put everything inside rendercontext
 
 Dont forget when you build the project you need to copy resources file from game folder to the "out/build/64-debug/game" or smt
 This problaby dosnt works on linux I didnt tested and I dont want to :)
+
+and btw it has some sync issues with vulkan when u destroy the buffer of a chunk it deletes instanty and command buffer is still using it we dont wait for our signal and then booom app goes crazy deletion
+of buffer shoud be affter we wait for semaphores but I'm not gonna do it because it works and just gives error and this is not my main project and I dont wanna go and do sync track objects the right way
+bc its gonna cost me a lots of time and I have a exam coming up... :/
